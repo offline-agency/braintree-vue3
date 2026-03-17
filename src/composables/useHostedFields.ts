@@ -25,6 +25,7 @@ export interface UseHostedFieldsReturn {
     cardholderName?: string
     billingAddress?: Record<string, string>
   }) => Promise<HostedFieldsTokenizePayload>
+  clear: () => void
 }
 
 export function useHostedFields(opts: UseHostedFieldsOptions): UseHostedFieldsReturn {
@@ -99,5 +100,12 @@ export function useHostedFields(opts: UseHostedFieldsOptions): UseHostedFieldsRe
     ) as unknown as Promise<HostedFieldsTokenizePayload>
   }
 
-  return { instance, isReady, cardType, error, tokenize }
+  function clear(): void {
+    if (!instance.value) return
+    for (const key of Object.keys(opts.fields)) {
+      instance.value.clear(key as Parameters<HostedFields['clear']>[0])
+    }
+  }
+
+  return { instance, isReady, cardType, error, tokenize, clear }
 }

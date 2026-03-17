@@ -1,3 +1,4 @@
+import { inject } from 'vue'
 import type { InjectionKey, Ref, ShallowRef } from 'vue'
 import type { Client } from 'braintree-web'
 
@@ -22,3 +23,18 @@ export interface BraintreeContext {
  */
 export const BraintreeClientKey: InjectionKey<BraintreeContext> =
   Symbol('BraintreeClientKey')
+
+/**
+ * Inject the Braintree client context provided by a parent useBraintreeClient() call.
+ * Throws a descriptive error when called outside a provider component.
+ */
+export function injectBraintreeClient(): BraintreeContext {
+  const ctx = inject(BraintreeClientKey)
+  if (!ctx) {
+    throw new Error(
+      '[braintree-vue3] injectBraintreeClient() was called outside of a component that provides BraintreeClientKey. ' +
+      'Make sure to wrap your component tree with BraintreeProvider or call useBraintreeClient() in a parent component.',
+    )
+  }
+  return ctx
+}

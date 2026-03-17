@@ -2,9 +2,13 @@
 // braintree-web's declarations before any composable types are resolved.
 import './types'
 
-// Injection key + context interface
-export { BraintreeClientKey } from './injection-keys'
+// Injection key + context interface + guard
+export { BraintreeClientKey, injectBraintreeClient } from './injection-keys'
 export type { BraintreeContext } from './injection-keys'
+
+// Components
+export { default as BraintreeProvider } from './components/BraintreeProvider.vue'
+export { default as BraintreeHostedFields } from './components/BraintreeHostedFields.vue'
 
 // Composables
 export { useBraintreeClient } from './composables/useBraintreeClient'

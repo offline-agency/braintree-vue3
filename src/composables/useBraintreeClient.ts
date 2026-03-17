@@ -11,6 +11,7 @@ export interface UseBraintreeClientReturn {
   isLoading: Ref<boolean>
   error: Ref<Error | null>
   initialize: () => Promise<void>
+  reinitialize: () => Promise<void>
 }
 
 export function useBraintreeClient(authorization: string): UseBraintreeClientReturn {
@@ -59,5 +60,17 @@ export function useBraintreeClient(authorization: string): UseBraintreeClientRet
     }
   }
 
-  return { client, isReady, isLoading, error, initialize }
+  async function reinitialize(): Promise<void> {
+    if (client.value) {
+      try {
+        client.value.teardown(() => { /* no-op */ })
+      } catch { /* swallow */ }
+      client.value = null
+      isReady.value = false
+      error.value = null
+    }
+    await initialize()
+  }
+
+  return { client, isReady, isLoading, error, initialize, reinitialize }
 }

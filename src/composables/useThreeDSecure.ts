@@ -17,7 +17,7 @@ export interface UseThreeDSecureReturn {
   isReady: Ref<boolean>
   error: Ref<Error | null>
   verifyCard: (options: ThreeDSecureVerifyOptions) => Promise<ThreeDSecureVerifyPayload>
-  cancelVerifyCard: () => void
+  cancelVerifyCard: () => null
 }
 
 export function useThreeDSecure(opts: UseThreeDSecureOptions): UseThreeDSecureReturn {
@@ -67,9 +67,11 @@ export function useThreeDSecure(opts: UseThreeDSecureOptions): UseThreeDSecureRe
     return instance.value.verifyCard(options)
   }
 
-  function cancelVerifyCard(): void {
+  function cancelVerifyCard(): null {
+    if (!instance.value) return null
     // @types/braintree-web requires a callback; pass a no-op to satisfy the type.
-    instance.value?.cancelVerifyCard(() => { /* no-op */ })
+    instance.value.cancelVerifyCard(() => { /* no-op */ })
+    return null
   }
 
   return { instance, isReady, error, verifyCard, cancelVerifyCard }
