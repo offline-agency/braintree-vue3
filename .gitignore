@@ -4,3 +4,16 @@ dist/
 .DS_Store
 .vscode/
 .claude
+
+# Test coverage
+coverage/
+
+# TypeDoc generated API docs — rebuilt in CI
+docs/api/
+
+# VitePress build output
+docs/.vitepress/dist
+docs/.vitepress/cache
+
+# semantic-release temporary tarball
+dist/*.tgz
